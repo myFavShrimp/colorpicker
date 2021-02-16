@@ -45,6 +45,16 @@ GOptionEntry option_entries[] = {
 	{}
 };
 
+void save_color_to_clipboard(const guint32 *color)
+{
+	GtkClipboard* clipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+		
+	gchar color_string[8];
+	sprintf(color_string, "#%06X\n", color);
+
+	gtk_clipboard_set_text(clipboard, color_string, -1);
+}
+
 static void
 printColorAt(GdkDrawable *drawable, gint x, gint y)
 {
@@ -61,6 +71,7 @@ printColorAt(GdkDrawable *drawable, gint x, gint y)
 			(color >> 0x00) & 0xFF,
 			color);
 	}
+	save_color_to_clipboard(color);
 	fflush(stdout);
 	gdk_image_destroy(pixel);
 }
